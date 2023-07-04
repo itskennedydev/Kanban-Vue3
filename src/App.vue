@@ -44,14 +44,16 @@ export default {
 </script>
 
 <template>
-  <!-- Board Start -->
+
   <header>
     <h1>
       Kanban Board
     </h1>
   </header>
+
+  <!-- Board Start -->
   <div class="kanban-row">
-    <div class="kanban-board-B" @drop="onDrop($event, 1)" @dragenter.prevent @dragover.prevent>
+    <div class="kanban-board-base" id="Red" @drop="onDrop($event, 1)" @dragenter.prevent @dragover.prevent>
       <div>
         <h2>Backlog</h2>
       </div>
@@ -65,7 +67,7 @@ export default {
     <!-- Board End -->
 
     <!-- Board Start -->
-    <div class="kanban-board-IP" @drop="onDrop($event, 2)" @dragenter.prevent @dragover.prevent>
+    <div class="kanban-board-base" id="Yellow" @drop="onDrop($event, 2)" @dragenter.prevent @dragover.prevent>
       <div>
         <h2>In Progress</h2>
       </div>
@@ -79,7 +81,7 @@ export default {
     <!-- Board End -->
 
     <!-- Board Start -->
-    <div class="kanban-board-T" @drop="onDrop($event, 3)" @dragenter.prevent @dragover.prevent>
+    <div class="kanban-board-base" id="Green" @drop="onDrop($event, 3)" @dragenter.prevent @dragover.prevent>
       <div>
         <h2>Tested</h2>
       </div>
@@ -93,7 +95,7 @@ export default {
     <!-- Board End -->
 
     <!-- Board Start -->
-    <div class="kanban-board-D" @drop="onDrop($event, 4)" @dragenter.prevent @dragover.prevent>
+    <div class="kanban-board-base" id="Blue" @drop="onDrop($event, 4)" @dragenter.prevent @dragover.prevent>
       <div>
         <h2>Done</h2>
       </div>
@@ -116,10 +118,6 @@ export default {
   font-weight: bold;
 }
 
-.text {
-  color: black;
-}
-
 /* styles for kanban board */
 .kanban-board {
   background-color: #ecf0f1;
@@ -130,12 +128,6 @@ export default {
   display: flex;
   justify-content: space-evenly;
   gap: 20px;
-}
-
-.title-bg {
-  border-radius: 15px;
-  padding: 10px;
-  min-height: 10px;
 }
 
 #Red {
@@ -154,30 +146,8 @@ export default {
   background-color: #5caff1;
 }
 
-.kanban-board-B {
+.kanban-board-base {
   border-radius: 15px;
-  background-color: #f45a5f;
-  padding: 10px;
-  min-height: 340px;
-}
-
-.kanban-board-IP {
-  border-radius: 15px;
-  background-color: #fea126;
-  padding: 10px;
-  min-height: 340px;
-}
-
-.kanban-board-T {
-  border-radius: 15px;
-  background-color: #1eba46;
-  padding: 10px;
-  min-height: 340px;
-}
-
-.kanban-board-D {
-  border-radius: 15px;
-  background-color: #5caff1;
   padding: 10px;
   min-height: 340px;
 }
