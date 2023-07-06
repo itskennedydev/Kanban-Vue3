@@ -1,14 +1,15 @@
 <script>
 import { ref } from 'vue';
+import { v4 as uuidv4 } from 'uuid';
 
 export default {
   setup() {
     const items = ref([
       // unique ID to identify each item - Title to render on screen - list it belongs to
-      { id: 0, title: 'Style registration', list: 1 },
-      { id: 1, title: 'Help with designs', list: 1 },
-      { id: 3, title: 'Test dashboard', list: 1 },
-      { id: 4, title: 'Finish Kanban Board', list: 1 },
+      { id: uuidv4(), title: 'Style registration', list: 1 },
+      { id: uuidv4(), title: 'Help with designs', list: 1 },
+      { id: uuidv4(), title: 'Test dashboard', list: 1 },
+      { id: uuidv4(), title: 'Finish Kanban Board', list: 1 },
     ]);
 
     // holds color value for each board
@@ -29,7 +30,7 @@ export default {
       const boardName = newBoardName.value.trim();
       if (boardName) {
         const newBoard = {
-          id: Date.now(),
+          id: uuidv4(),
           name: boardName,
           color: '#fff',
         };
