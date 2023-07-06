@@ -11,6 +11,14 @@ export default {
       { id: 4, title: 'Finish Kanban Board', list: 1 },
     ]);
 
+    // holds color value for each board
+    const boards = ref([
+      { id: 1, name: 'Backlog', color: '#f45a5f' },
+      { id: 2, name: 'In Progress', color: '#fea126' },
+      { id: 3, name: 'Tested', color: '#1eba46' },
+      { id: 4, name: 'Done', color: '#5caff1' },
+    ]);
+
     const newBoardName = ref('');
 
     const getBoardId = (boardId) => {
@@ -23,18 +31,12 @@ export default {
         const newBoard = {
           id: Date.now(),
           name: boardName,
+          color: '#fff',
         };
         boards.value.push(newBoard);
         newBoardName.value = '';
       }
     };
-
-    const boards = ref([
-      { id: 1, name: 'Backlog' },
-      { id: 2, name: 'In Progress' },
-      { id: 3, name: 'Tested' },
-      { id: 4, name: 'Done' },
-    ]);
 
     const newTaskTitle = ref('');
 
@@ -78,14 +80,9 @@ export default {
     };
 
     const getBoardStyle = (boardName) => {
-      if (boardName === 'Backlog') {
-        return { backgroundColor: '#f45a5f', minHeight: '340px' };
-      } else if (boardName === 'In Progress') {
-        return { backgroundColor: '#fea126', minHeight: '340px' };
-      } else if (boardName === 'Tested') {
-        return { backgroundColor: '#1eba46', minHeight: '340px' };
-      } else if (boardName === 'Done') {
-        return { backgroundColor: '#5caff1', minHeight: '340px' };
+      const board = boards.value.find((board) => board.name === boardName);
+      if (board) {
+        return { backgroundColor: board.color, minHeight: '340px' };
       }
     };
 
@@ -133,6 +130,14 @@ export default {
       @dragenter.prevent @dragover.prevent class="kanban-board-base" :style="getBoardStyle(board.name)">
       <div>
         <h2>{{ board.name }}</h2>
+        <div>
+          <div>
+            Change Color
+          </div>
+          <div class="color-picker">
+            <input type="color" v-model="board.color">
+          </div>
+        </div>
       </div>
       <div>
         <div v-for="item in getList(board.id)" :key="item.id" class="drag-el" draggable="true"
@@ -187,5 +192,9 @@ export default {
 
 .drag-el:nth-last-of-type(1) {
   margin-bottom: 0;
+}
+
+.color-picker {
+  padding-bottom: 5px;
 }
 </style>
