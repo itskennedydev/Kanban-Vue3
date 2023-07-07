@@ -46,22 +46,29 @@ export default {
       return items.value.filter((item) => item.list == list);
     };
 
-    const startDrag = (event, item) => {
-      console.log(item)
-      // Controls visual feedback user gets when dragging & dropping 
-      event.dataTransfer.dropEffect = 'move';
-      //  Tells the drag & drop api to move original item not copy 
-      event.dataTransfer.effectAllowed = 'move';
-      event.dataTransfer.setData('itemID', item.id);
-    }
+    const startDrag = (event, item, boardId) => {
+      if (item) {
+        event.dataTransfer.setData('itemID', item.id);
+        event.dataTransfer.setData('listID', item.list);
+      } else if (boardId) {
+        event.dataTransfer.setData('boardID', boardId);
+      }
+    };
 
     const onDrop = (event, list, board) => {
-      // Accesses the ID that is stored in data transfer object
       const itemID = event.dataTransfer.getData('itemID');
-      // Finds item associated with ID
-      const item = items.value.find((item) => item.id == itemID);
-      item.list = list;
-    }
+      const boardID = event.dataTransfer.getData('boardID');
+
+      if (itemID) {
+        const item = items.value.find((item) => item.id == itemID);
+        item.list = list;
+      } else if (boardID) {
+        const boardIndex = boards.value.findIndex((b) => b.id == boardID);
+        const targetIndex = boards.value.findIndex((b) => b.id == board);
+        const [removedBoard] = boards.value.splice(boardIndex, 1);
+        boards.value.splice(targetIndex, 0, removedBoard);
+      }
+    };
 
     // Handles new Tasks 
     const addTask = () => {
@@ -80,8 +87,8 @@ export default {
       }
     };
 
-    const getBoardStyle = (boardName) => {
-      const board = boards.value.find((board) => board.name === boardName);
+    const getBoardStyle = (boardId) => {
+      const board = boards.value.find((board) => board.name === boardId);
       if (board) {
         return { backgroundColor: board.color, minHeight: '340px' };
       }
@@ -128,7 +135,8 @@ export default {
   <!-- Boards -->
   <div class="kanban-row">
     <div v-for="board in boards" :key="board.id" :id="getBoardId(board.id)" @drop="onDrop($event, board.id)"
-      @dragenter.prevent @dragover.prevent class="kanban-board-base" :style="getBoardStyle(board.name)">
+      @dragenter.prevent @dragover.prevent class="kanban-board-base" :style="getBoardStyle(board.name)" draggable="true"
+      @dragstart="startDrag($event, null, board.id)">
       <div>
         <h2>{{ board.name }}</h2>
         <div>
